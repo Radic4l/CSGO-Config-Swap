@@ -1,5 +1,6 @@
 import os
 import pathlib
+import shutil
 import stat
 import json
 import time
@@ -95,9 +96,9 @@ def findUserFolder ():
             pass
     json_conf = json.dumps(finalDic, sort_keys=True, indent=4)
     # print('The Final Dict is : \n{}'.format(finalDic))
-    print('\033[1;33;40m JSON FILE :\033[0m \n')
+    print('\033[1;33;40m JSON FILE :\033[0m\n')
     print(json_conf)
-    print(finalDic["358696705"]["name"])
+    # print(finalDic["358696705"]["name"])
     return finalDic
 
 test = findUserFolder()
@@ -121,8 +122,9 @@ def delConfigFile ():
 def backupConfigFile ():
     timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     print(timeTest)
+
     # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
-    os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
+    # os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
     # pass
 
 # delConfigFile()
