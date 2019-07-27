@@ -10,6 +10,7 @@ import datetime
 Locate drive(s) Up
 
 '''
+
 driveLetterList = ['A:','D:','C:','B:','E:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']
 
 
@@ -28,7 +29,7 @@ def findDrive(self):
             print('Permission Denied for ' + letter)
             pass
 
-    # print('We found {0} drive(s) up {1}'.format(nbDrives, existingDrives))
+    print('We found {0} drive(s) up {1}'.format(nbDrives, existingDrives))
     return existingDrives
 
 drives = findDrive(driveLetterList)
@@ -85,7 +86,7 @@ def findUserFolder ():
                     cleanValues = " ".join(values)
                     dic = {'name':cleanValues.replace('"',''),'pathConfig':configFilePath,'pathFolder': steamUserdataPath + '\\' + x + '\\730', 'update':modificationTime}
                     finalDic[x] = dic
-                    print('We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime)
+                    # print('We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime)
                     openConfigFile.close()
                 else:
                     pass
@@ -110,10 +111,20 @@ test = findUserFolder()
     le path du dossier
 '''
 
-def delConfigFile (self):
+
+def delConfigFile ():
     timeTest = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     print(timeTest)
     # os.rename("path/to/current/file.foo", "path/to/new/destination/for/file.foo")
     # pass
 
-delConfigFile(self=1)
+def backupConfigFile ():
+    timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+    print(timeTest)
+    # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
+    os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
+    # pass
+
+# delConfigFile()
+
+backupConfigFile()
