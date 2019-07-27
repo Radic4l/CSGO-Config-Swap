@@ -1,6 +1,7 @@
 import os
 import pathlib
 import stat
+import json
 import time
 import datetime
 
@@ -24,7 +25,7 @@ def findDrive(self):
                 existingDrives.append(letter)
                 nbDrives = nbDrives + 1
         except WindowsError:
-            # print('Permission Denied for ' + letter)
+            print('Permission Denied for ' + letter)
             pass
 
     # print('We found {0} drive(s) up {1}'.format(nbDrives, existingDrives))
@@ -91,13 +92,18 @@ def findUserFolder ():
         else:
             print('No config file on profile folder ' + x)
             pass
-    # print(finalDic)
+    json_conf = json.dumps(finalDic, sort_keys=True, indent=4)
+    # print('The Final Dict is : \n{}'.format(finalDic))
+    print('\033[1;33;40m JSON FILE :\033[0m \n')
+    print(json_conf)
+    print(finalDic["358696705"]["name"])
     return finalDic
 
 test = findUserFolder()
 
-for key, value in test.items():
-    print("Key : {} Values : {}".format(key,value))
+# for key, value in test.items():
+#   print("Key : {} Values : {}".format(key,value))
+    
 '''
     Fonction pour effacer le dossier 
     de configuration d'un profile via
