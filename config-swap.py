@@ -3,6 +3,7 @@
 import os
 import pathlib
 import shutil
+import easygui
 import stat
 import json
 import time
@@ -24,7 +25,7 @@ def findDrive():
     -> Vérification des disques existants
         => Retourne un tableau contenant les disques existant
     '''
-    driveLetterList = ['A:','D:','C:','B:','E:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']    
+    driveLetterList = ['A:','D:','C:','E:','B:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']
     existingDrives = []
     nbDrives = 0
     for letter in driveLetterList:
@@ -39,7 +40,7 @@ def findDrive():
             else:
                 print(bcolors.FAIL+"{0}".format(disk.exists())+bcolors.ENDC)
         except WindowsError:
-            print('Permission Denied for ' + letter)
+            print(bcolors.FAIL+'Permission Denied'+bcolors.ENDC)
             continue
     print(bcolors.OKBLUE+'We found {0} drive(s) up {1}'.format(nbDrives, existingDrives)+bcolors.ENDC)
     time.sleep(1)
@@ -54,14 +55,21 @@ def locateSteamFolder(self):
      a chaque boucle si a la fin le table ne contient que false
      alors demander à l'utilisateur de rentrer le path en input
     '''
+    existingTabs = {}
     for letter in self:
         path = letter + '\\Program Files (x86)\\Steam\\userdata'
         existingPath = pathlib.Path(path).exists()
         if existingPath == True:
-            return path
-        else:
-            path = input('Entrer le path de Steam : ')
-            return path + '\\userdata'
+            existingTabs[existingPath] = path
+        elif existingPath == False:
+            existingTabs[existingPath] = path
+            exist = pathlib.Path(path).exists()
+    # print(bcolors.BOLD+"Dictionnaire des path sur disque : {}".format(existingTabs)+bcolors.ENDC)
+    if True in existingTabs:
+        return existingTabs[True]
+    else:
+        path = easygui.diropenbox() + '\\userdata'
+        return path
 
 def findUserFolder ():
     '''
@@ -93,12 +101,15 @@ def findUserFolder ():
                 if 'name' in values:
                     values.remove('name')
                     cleanValues = " ".join(values)
-                    dic = {'name':cleanValues.replace('"',''),'pathConfig':configFilePath,'pathFolder': steamUserdataPath + '\\' + x + '\\730', 'update':modificationTime}
+                    dic = {
+                        'name':cleanValues.replace('"',''),
+                        'pathConfig':configFilePath,
+                        'pathFolder': steamUserdataPath + '\\' + x + '\\730',
+                        'update':modificationTime
+                    }
                     finalDic[x] = dic
                     print(bcolors.OKGREEN+'We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime+bcolors.ENDC)
                     time.sleep(1)
-                    #print(splited_config)
-                    time.sleep(0.5)
                     openConfigFile.close()
                 else:
                     continue
@@ -114,8 +125,8 @@ def findUserFolder ():
     #print(json_conf)
     #print(type(json_conf))
     json_loaded = json.loads(json_conf) # retransforme le type(str) en dictionnaire
-    print(json_loaded['951223574']['name'])
-    print(type(json_loaded))
+    #print(json_loaded['72453270']['name'])
+    #print(type(json_loaded))
     return json_loaded
     
 def backupConfigFile ():
