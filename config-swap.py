@@ -1,3 +1,5 @@
+#!/usr/bin/env python 
+#-*- coding: utf-8 -*-
 import os
 import pathlib
 import shutil
@@ -6,40 +8,48 @@ import json
 import time
 import datetime
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    ENDC = '\033[0m'
 
-'''
--> déclaration de variable
--> Vérification des disques existants # findDrive(arg)
-    -> Retourne un tableau contenant les disques existant
-'''
 
 def findDrive():
+    '''
+    -> Vérification des disques existants
+        => Retourne un tableau contenant les disques existant
+    '''
     driveLetterList = ['A:','D:','C:','B:','E:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']    
     existingDrives = []
     nbDrives = 0
     for letter in driveLetterList:
         try:
             disk = pathlib.Path(letter)
-            print("Vérification de l'éxistance du disque : {0} -> {1}".format(letter,disk.exists()))
+            print("Checking existing drive ... {0} -> ".format(letter), end="", flush=True)
             time.sleep(0.1)
             if disk.exists() == True:
+                print(bcolors.OKGREEN+"{0}".format(disk.exists())+bcolors.ENDC)
                 existingDrives.append(letter)
                 nbDrives = nbDrives + 1
+            else:
+                print(bcolors.FAIL+"{0}".format(disk.exists())+bcolors.ENDC)
         except WindowsError:
             print('Permission Denied for ' + letter)
             continue
-    print('We found {0} drive(s) up {1}'.format(nbDrives, existingDrives))
+    print(bcolors.OKBLUE+'We found {0} drive(s) up {1}'.format(nbDrives, existingDrives)+bcolors.ENDC)
+    time.sleep(1)
     return existingDrives
-
-
-
-'''
--> Localise l'emplacement de steam sur les disques existants
--> 
-'''
 
 def locateSteamFolder(self):
     '''
+    -> Localise l'emplacement de steam sur les disques existants
+        => Retourne l'emplacement (path) de steam
+     
      NB: Ajouter dans un tableau la valeur de existingPath
      a chaque boucle si a la fin le table ne contient que false
      alors demander à l'utilisateur de rentrer le path en input
@@ -53,16 +63,14 @@ def locateSteamFolder(self):
             path = input('Entrer le path de Steam : ')
             return path + '\\userdata'
 
-
-
-'''
-trouve les profils présent et regarde si le fichier de conf et présent
-
-NB: Séparer les deux actions en deux fonction ?
-Ajouter un dictionnaire contenant le nom et le path du fichier de conf
-'''
-
 def findUserFolder ():
+    '''
+    -> vérifie l'éxistance du dossier CSGO 
+        -> # L'id du dossier csgo et le 730
+    -> créer un json des profile avec différentes cles
+        => Numéros de dossier utilisateur : name, pathConfig, pathFolder, update
+        => retourne le dictionnaire # json_loaded
+    '''
     finalDic = {}
     for x in os.listdir(steamUserdataPath):
         exists = os.path.isfile(steamUserdataPath + '\\' + x + '\\730\\local\\cfg\\config.cfg')
@@ -78,7 +86,7 @@ def findUserFolder ():
                                     encoding='utf8')
             readConfigFile = openConfigFile.read()
             splited_config = readConfigFile.split("\n")
-            # print(splited_config)
+            time.sleep(1)
             for lines in splited_config:
                 values = lines.split(' ')
                 # print(values)
@@ -87,53 +95,52 @@ def findUserFolder ():
                     cleanValues = " ".join(values)
                     dic = {'name':cleanValues.replace('"',''),'pathConfig':configFilePath,'pathFolder': steamUserdataPath + '\\' + x + '\\730', 'update':modificationTime}
                     finalDic[x] = dic
-                    # print('We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime)
+                    print(bcolors.OKGREEN+'We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime+bcolors.ENDC)
+                    time.sleep(1)
+                    #print(splited_config)
+                    time.sleep(0.5)
                     openConfigFile.close()
                 else:
-                    pass
+                    continue
         else:
-            print('No config file on profile folder ' + x)
-            pass
-    json_conf = json.dumps(finalDic, sort_keys=True, indent=4)
-    # print('The Final Dict is : \n{}'.format(finalDic))
-    print('\033[1;33;40m JSON FILE :\033[0m\n')
-    print(json_conf)
-
-    # print(finalDic["358696705"]["name"])
-    return finalDic
-
-
-# for key, value in test.items():
-#   print("Key : {} Values : {}".format(key,value))
+            print(bcolors.FAIL+'No config file on '+x+bcolors.ENDC)
+            time.sleep(0.5)
+            continue
+    json_conf = json.dumps(finalDic, sort_keys=True, indent=4) # convertie le dictionnaire en string
+    #print(bcolors.OKBLUE+'The Final Dict is : {}'.format(finalDic)+bcolors.ENDC)
+    #print(type(finalDic))
+    #print(bcolors.HEADER+'JSON FILE :'+bcolors.ENDC)    
+    #time.sleep(1)
+    #print(json_conf)
+    #print(type(json_conf))
+    json_loaded = json.loads(json_conf) # retransforme le type(str) en dictionnaire
+    print(json_loaded['951223574']['name'])
+    print(type(json_loaded))
+    return json_loaded
     
-'''
-    Fonction pour effacer le dossier 
-    de configuration d'un profile via
-    le path du dossier
-'''
-
-
-def delConfigFile ():
-    timeTest = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    print(timeTest)
-    # os.rename("path/to/current/file.foo", "path/to/new/destination/for/file.foo")
-    # pass
-
 def backupConfigFile ():
+    '''
+    -> Retire le dossier de configuration csgo du profile cible
+    -> Créer un backup du dossier de configuration
+    '''
     timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     print(timeTest)
-
     #if os.path.isdir() == False:
      #   pass
         # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
         # os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
         # pass
 
-# delConfigFile()
 
+if __name__ == '__main__':
 
-drives = findDrive()
-steamUserdataPath = locateSteamFolder(drives)
-print(steamUserdataPath)
-test = findUserFolder()
-backupConfigFile()
+    drives = findDrive() # tableau des disques existants
+    steamUserdataPath = locateSteamFolder(drives)
+    print('Print de steamUserdataPath : '+steamUserdataPath+' = {0}'.format(type(steamUserdataPath)))
+    test = findUserFolder()
+    print(test)
+    for key,value in test.items():
+        print(key)
+        print(str(value))
+        time.sleep(1)
+    backupConfigFile()
