@@ -8,35 +8,34 @@ import datetime
 
 
 '''
-Locate drive(s) Up
-
+-> déclaration de variable
+-> Vérification des disques existants # findDrive(arg)
+    -> Retourne un tableau contenant les disques existant
 '''
 
-driveLetterList = ['A:','D:','C:','B:','E:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']
-
-
-def findDrive(self):
+def findDrive():
+    driveLetterList = ['A:','D:','C:','B:','E:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']    
     existingDrives = []
     nbDrives = 0
-    for letter in self:
+    for letter in driveLetterList:
         try:
-            # print(letter)
-            value = pathlib.Path(letter)
-            # print(value.exists())
-            if value.exists() == True:
+            disk = pathlib.Path(letter)
+            print("Vérification de l'éxistance du disque : {0} -> {1}".format(letter,disk.exists()))
+            time.sleep(0.1)
+            if disk.exists() == True:
                 existingDrives.append(letter)
                 nbDrives = nbDrives + 1
         except WindowsError:
             print('Permission Denied for ' + letter)
-            pass
-
+            continue
     print('We found {0} drive(s) up {1}'.format(nbDrives, existingDrives))
     return existingDrives
 
-drives = findDrive(driveLetterList)
+
 
 '''
-Search steamapps folder
+-> Localise l'emplacement de steam sur les disques existants
+-> 
 '''
 
 def locateSteamFolder(self):
@@ -50,10 +49,11 @@ def locateSteamFolder(self):
         existingPath = pathlib.Path(path).exists()
         if existingPath == True:
             return path
+        else:
+            path = input('Entrer le path de Steam : ')
+            return path + '\\userdata'
 
 
-steamUserdataPath = locateSteamFolder(drives)
-print(steamUserdataPath)
 
 '''
 trouve les profils présent et regarde si le fichier de conf et présent
@@ -98,10 +98,10 @@ def findUserFolder ():
     # print('The Final Dict is : \n{}'.format(finalDic))
     print('\033[1;33;40m JSON FILE :\033[0m\n')
     print(json_conf)
+
     # print(finalDic["358696705"]["name"])
     return finalDic
 
-test = findUserFolder()
 
 # for key, value in test.items():
 #   print("Key : {} Values : {}".format(key,value))
@@ -123,10 +123,17 @@ def backupConfigFile ():
     timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
     print(timeTest)
 
-    # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
-    # os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
-    # pass
+    #if os.path.isdir() == False:
+     #   pass
+        # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
+        # os.rename("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg\\config.cfg", "E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup\\config-{0}.cfg".format(timeTest))
+        # pass
 
 # delConfigFile()
 
+
+drives = findDrive()
+steamUserdataPath = locateSteamFolder(drives)
+print(steamUserdataPath)
+test = findUserFolder()
 backupConfigFile()
