@@ -31,8 +31,8 @@ def findDrive():
     for letter in driveLetterList:
         try:
             disk = pathlib.Path(letter)
-            print("Checking existing drive ... {0} -> ".format(letter), end="", flush=True)
-            time.sleep(0.1)
+            print("Checking existing drive ... "+bcolors.HEADER+"{0}".format(letter)+bcolors.ENDC+" -> ", end="", flush=True)
+            time.sleep(0.05)
             if disk.exists() == True:
                 print(bcolors.OKGREEN+"{0}".format(disk.exists())+bcolors.ENDC)
                 existingDrives.append(letter)
@@ -42,8 +42,8 @@ def findDrive():
         except WindowsError:
             print(bcolors.FAIL+'Permission Denied'+bcolors.ENDC)
             continue
-    print(bcolors.OKBLUE+'We found {0} drive(s) up {1}'.format(nbDrives, existingDrives)+bcolors.ENDC)
-    time.sleep(1)
+    print(bcolors.OKBLUE+'{0} drive(s) up {1}'.format(nbDrives, existingDrives)+bcolors.ENDC)
+    time.sleep(0.5)
     return existingDrives
 
 def locateSteamFolder(self):
@@ -63,7 +63,7 @@ def locateSteamFolder(self):
             existingTabs[existingPath] = path
         elif existingPath == False:
             existingTabs[existingPath] = path
-            exist = pathlib.Path(path).exists()
+            #exist = pathlib.Path(path).exists()
     # print(bcolors.BOLD+"Dictionnaire des path sur disque : {}".format(existingTabs)+bcolors.ENDC)
     if True in existingTabs:
         return existingTabs[True]
@@ -94,7 +94,7 @@ def findUserFolder ():
                                     encoding='utf8')
             readConfigFile = openConfigFile.read()
             splited_config = readConfigFile.split("\n")
-            time.sleep(1)
+            time.sleep(0.5)
             for lines in splited_config:
                 values = lines.split(' ')
                 # print(values)
@@ -109,7 +109,7 @@ def findUserFolder ():
                     }
                     finalDic[x] = dic
                     print(bcolors.OKGREEN+'We found settings of ' + cleanValues + ' account from ' + x + ' Last modified at : ' + modificationTime+bcolors.ENDC)
-                    time.sleep(1)
+                    time.sleep(0.5)
                     openConfigFile.close()
                 else:
                     continue
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     test = findUserFolder()
     print(test)
     for key,value in test.items():
-        print(key)
+        #print(key)
         print(str(value))
-        time.sleep(1)
+        time.sleep(0.5)
     backupConfigFile()
