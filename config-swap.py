@@ -4,10 +4,8 @@ import os
 import pathlib
 import shutil
 import easygui
-import stat
 import json
 import time
-import datetime
 
 class bcolors:
     HEADER = '\033[95m'
@@ -150,8 +148,10 @@ if __name__ == '__main__':
     print('Print de steamUserdataPath : '+steamUserdataPath+' = {0}'.format(type(steamUserdataPath)))
     test = findUserFolder()
     print(test)
+    len(test)
     for key,value in test.items():
-        #print(key)
+        print('=' * len(str(value)))
+        print(key)
         print(str(value))
         time.sleep(0.5)
     backupConfigFile()
