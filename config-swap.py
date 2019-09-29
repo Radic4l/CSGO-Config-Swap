@@ -23,7 +23,8 @@ def findDrive():
     -> Vérification des disques existants
         => Retourne un tableau contenant les disques existant
     '''
-    driveLetterList = ['A:','D:','C:','E:','B:','F:','G:','H:','I:','J:','K:','L:','M:','N:','O:','P:','Q:','R:','S:','T:','U:','V:','W:','X:','Y:','Z:']
+    driveLetterList = [chr(x)+':' for x in range(65,91)]
+    print(driveLetterList)
     existingDrives = []
     nbDrives = 0
     for letter in driveLetterList:
