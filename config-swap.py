@@ -117,24 +117,29 @@ def findUserFolder ():
             time.sleep(0.5)
             continue
     json_conf = json.dumps(finalDic, sort_keys=True, indent=4) # convertie le dictionnaire en string
-    #print(bcolors.OKBLUE+'The Final Dict is : {}'.format(finalDic)+bcolors.ENDC)
-    #print(type(finalDic))
-    #print(bcolors.HEADER+'JSON FILE :'+bcolors.ENDC)    
-    #time.sleep(1)
-    #print(json_conf)
-    #print(type(json_conf))
+    print(bcolors.OKBLUE+'The Final Dict is : {}'.format(finalDic)+bcolors.ENDC)
+    print(type(finalDic))
+    print(bcolors.HEADER+'JSON FILE :'+bcolors.ENDC)
+    time.sleep(1)
+    print(json_conf)
+    print(type(json_conf))
     json_loaded = json.loads(json_conf) # retransforme le type(str) en dictionnaire
     #print(json_loaded['72453270']['name'])
     #print(type(json_loaded))
     return json_loaded
-    
-def backupConfigFile ():
-    '''
-    -> Retire le dossier de configuration csgo du profile cible
-    -> Créer un backup du dossier de configuration
-    '''
-    timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
-    print(timeTest)
+
+
+class configOperation :
+
+    @staticmethod
+    def backupConfigFile ():
+        '''
+        -> Retire le dossier de configuration csgo du profile cible
+        -> Créer un backup du dossier de configuration
+        '''
+        timeTest = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+        print(timeTest)
+        return timeTest
     #if os.path.isdir() == False:
      #   pass
         # os.mkdir("E:\\Program Files (x86)\\Steam\\userdata\\29832948\\730\\local\\cfg-Backup")
@@ -155,4 +160,7 @@ if __name__ == '__main__':
         print(key)
         print(str(value))
         time.sleep(0.5)
-    backupConfigFile()
+    # backupConfigFile()
+    c = configOperation()
+    toto = c.backupConfigFile
+    print(toto)
