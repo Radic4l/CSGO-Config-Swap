@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 #-*- coding: utf-8 -*-
+
 import os
 import pathlib
 import shutil
@@ -19,7 +20,7 @@ class bcolors:
 
 
 def findDrive():
-    '''
+    '''d
     -> Vérification des disques existants
         => Retourne un tableau contenant les disques existant
     '''
@@ -161,6 +162,5 @@ if __name__ == '__main__':
         print(str(value))
         time.sleep(0.5)
     # backupConfigFile()
-    c = configOperation()
-    toto = c.backupConfigFile
-    print(toto)
+    c = configOperation.backupConfigFile()
+    print(c)
