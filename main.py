@@ -12,7 +12,10 @@
 __author__ = 'Radic4l'
 __version__ = '0.0.1'
 
+
 import steamutils
 
-print(steamutils.getProfilesPath(steamutils.steamPath()))
-
+if __name__ == '__main__':
+    profilesListe = steamutils.getProfilesPath(steamutils.steamPath())
+    print(profilesListe)
+    print(steamutils.getConf(profilesListe[1]))
