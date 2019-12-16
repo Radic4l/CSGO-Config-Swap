@@ -18,4 +18,4 @@ import steamutils
 if __name__ == '__main__':
     profilesListe = steamutils.getProfilesPath(steamutils.steamPath())
     print(profilesListe)
-    print(steamutils.getConf(profilesListe[1]))
+    print(steamutils.getConf(profilesListe[6]))
