@@ -2,6 +2,9 @@
 #! -*- coding: utf-8 -*-
 
 """
+    Implémentation du module de manipulation
+    des fichiers de configurations des profils
+    steam existant.
 
     @author: Radic4l
 """
@@ -17,7 +20,7 @@ __all__ = ['getConf']
 def getConf(self):
     path = self+'/730/local/cfg/config.cfg'
     path = path.replace('/','\\'+'\\')
-    finalDic = {}
+    final_dict = {}
     if os.path.isfile(path):
         # Get file's Last modification timestamp only in terms of seconds since epoch
         modTimesinceEpoc = os.path.getmtime(path)
@@ -35,14 +38,14 @@ def getConf(self):
                 cleanValues = " ".join(values)
                 dic = {
                     'name': cleanValues.replace('"', ''),
-                    'pathConfig': path,
+                    'pathConfig': path.replace('\\\\','\\'),
                     'pathFolder': self + '/730',
                     'update': modificationTime
                 }
-                finalDic[self.split('/')[-1]] = dic
+                final_dict[self.split('/')[-1]] = dic
 
         openConfigFile.close()
-        return finalDic
+        return final_dict
         # return path
     else:
         return f'Error path : {path}'
