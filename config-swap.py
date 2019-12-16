@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 import os
 import pathlib
-import shutil
+# import shutil
 import easygui
 import json
 import time
@@ -131,8 +131,8 @@ def findUserFolder ():
 
 class configOperation :
 
-    @staticmethod
-    def backupConfigFile ():
+    # @staticmethod
+    def backupConfigFile (self):
         '''
         -> Retire le dossier de configuration csgo du profile cible
         -> Créer un backup du dossier de configuration
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         print('=' * len(str(value)))
         print(key)
         print(str(value))
-        time.sleep(0.5)
+        time.sleep(0.2)
     # backupConfigFile()
     c = configOperation()
     toto = c.backupConfigFile
