@@ -4,7 +4,7 @@ import winreg
 
 __author__ = 'Radic4l'
 __version__ = '0.0.1'
-__all__ = ['']
+__all__ = ['games']
 
 def games():
     # i = 0

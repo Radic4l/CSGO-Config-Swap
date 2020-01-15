@@ -80,20 +80,20 @@ def findUserFolder ():
         => retourne le dictionnaire # json_loaded
     '''
     finalDic = {}
-    # for x in os.listdir(steamUserdataPath):
-    #     exists = os.path.isfile(steamUserdataPath + '\\' + x + '\\730\\local\\cfg\\config.cfg')
-    #     if exists:
-    #         configFilePath = steamUserdataPath + '\\' + x + '\\730\\local\\cfg\\config.cfg'
+    for x in os.listdir(steamUserdataPath):
+        exists = os.path.isfile(steamUserdataPath + '\\' + x + '\\730\\local\\cfg\\config.cfg')
+        if exists:
+            configFilePath = steamUserdataPath + '\\' + x + '\\730\\local\\cfg\\config.cfg'
 
-            # # Get file's Last modification timestamp only in terms of seconds since epoch
-            # modTimesinceEpoc = os.path.getmtime(configFilePath)
-            # # Convert seconds since epoch to readable timestamp
-            # modificationTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modTimesinceEpoc))
-            # # print('config file found on profile folder ' + x)
-            # openConfigFile = open(configFilePath,'r',
-            #                         encoding='utf8')
-            # readConfigFile = openConfigFile.read()
-            # splited_config = readConfigFile.split("\n")
+            # Get file's Last modification timestamp only in terms of seconds since epoch
+            modTimesinceEpoc = os.path.getmtime(configFilePath)
+            # Convert seconds since epoch to readable timestamp
+            modificationTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(modTimesinceEpoc))
+            # print('config file found on profile folder ' + x)
+            openConfigFile = open(configFilePath,'r',
+                                    encoding='utf8')
+            readConfigFile = openConfigFile.read()
+            splited_config = readConfigFile.split("\n")
             time.sleep(0.5)
             for lines in splited_config:
                 values = lines.split(' ')
