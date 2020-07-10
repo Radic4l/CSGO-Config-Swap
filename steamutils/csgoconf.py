@@ -81,6 +81,7 @@ class getConf:
         # print(f"{bcolors.WARNING}[i] SELF VARIABLE : {profiles}{bcolors.ENDC}")
         for p in self:
             print(f"{bcolors.WARNING}[i] VALUE FROM for p : {p}{bcolors.ENDC}")
+
             path = p + '/730/local/cfg/config.cfg'
             path = path.replace('/', '\\' + '\\')
             print(f"{bcolors.OKBLUE}[.] Analizing path : {path} ...{bcolors.ENDC}")
